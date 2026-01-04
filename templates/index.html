@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Big Mart Sales Prediction</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f6f9;
+            text-align: center;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            width: 420px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        input {
+            width: 95%;
+            padding: 8px;
+            margin: 6px 0;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+        h3 {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Big Mart Sales Prediction</h2>
+
+<form action="/predict" method="post">
+
+    <input name="Item_Identifier" placeholder="Item Identifier (encoded)" required>
+    <input name="Item_Weight" placeholder="Item Weight" required>
+    <input name="Item_Fat_Content" placeholder="Item Fat Content (0/1)" required>
+    <input name="Item_Visibility" placeholder="Item Visibility" required>
+    <input name="Item_Type" placeholder="Item Type (encoded)" required>
+    <input name="Item_MRP" placeholder="Item MRP" required>
+    <input name="Outlet_Identifier" placeholder="Outlet Identifier (encoded)" required>
+    <input name="Outlet_Establishment_Year" placeholder="Outlet Establishment Year" required>
+    <input name="Outlet_Size" placeholder="Outlet Size (encoded)" required>
+    <input name="Outlet_Location_Type" placeholder="Outlet Location Type (encoded)" required>
+    <input name="Outlet_Type" placeholder="Outlet Type (encoded)" required>
+
+    <button type="submit">Predict Sales</button>
+</form>
+
+<br>
+<h3>{{ prediction_text }}</h3>
+
+</body>
+</html>
