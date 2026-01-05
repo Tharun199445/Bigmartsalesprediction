@@ -4,27 +4,40 @@ import pickle
 
 app = Flask(__name__)
 
-# Load model and feature order
+# Load trained objects
 model = pickle.load(open('bigmart_model.pkl', 'rb'))
 feature_order = pickle.load(open('feature_order.pkl', 'rb'))
+encoder = pickle.load(open('encoder.pkl', 'rb'))
+
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.form
+        features = []
 
-        # Build features dynamically using training order
-        features = [float(data[col]) for col in feature_order]
+        # Build input exactly like training
+        for col in feature_order:
+            value = data[col]
+
+            # Try numeric conversion
+            try:
+                value = float(value)
+            except:
+                # Encode categorical values
+                value = encoder.transform([value])[0]
+
+            features.append(value)
 
         final_features = np.array(features).reshape(1, -1)
 
-        # Debug (optional)
-        print("Feature order:", feature_order)
-        print("Feature shape:", final_features.shape)
+        # Debug (can remove later)
+        print("Final features:", final_features)
 
         prediction = model.predict(final_features)
 
@@ -38,6 +51,7 @@ def predict():
             'index.html',
             prediction_text=f"Error: {str(e)}"
         )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
